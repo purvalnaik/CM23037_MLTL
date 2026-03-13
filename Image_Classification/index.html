@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Vision | MobileNet Classifier</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/mobilenet"></script>
+    
+    <style>
+        :root {
+            --primary: #6366f1;
+            --bg: #0f172a;
+            --card: #1e293b;
+            --text: #f8fafc;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            background: var(--card);
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
+            width: 90%;
+            max-width: 500px;
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        h1 { font-weight: 800; letter-spacing: -1px; margin-bottom: 0.5rem; }
+        p { color: #94a3b8; margin-bottom: 2rem; }
+
+        /* Custom Upload Button */
+        .upload-wrapper {
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        .custom-file-upload {
+            background: var(--primary);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: transform 0.2s, background 0.2s;
+            display: inline-block;
+        }
+
+        .custom-file-upload:hover {
+            background: #4f46e5;
+            transform: translateY(-2px);
+        }
+
+        #imagePreview {
+            width: 100%;
+            border-radius: 15px;
+            margin-top: 1rem;
+            border: 2px dashed #475569;
+            display: none;
+        }
+
+        #status {
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            color: #818cf8;
+        }
+
+        .prediction-card {
+            background: rgba(255,255,255,0.05);
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 12px;
+            text-align: left;
+        }
+
+        .prediction-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .prediction-item:last-child { border-bottom: none; }
+        
+        .prob-badge {
+            background: #22c55e;
+            padding: 2px 8px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>AI Vision</h1>
+    <p>Powered by MobileNet & TF.js</p>
+
+    <div class="upload-wrapper">
+        <label for="imageUpload" class="custom-file-upload">
+            Choose an Image
+        </label>
+        <input type="file" id="imageUpload" accept="image/*">
+    </div>
+
+    <img id="imagePreview" alt="Upload Preview">
+
+    <div id="status">Warming up the AI engine...</div>
+    <div id="predictions" class="prediction-card" style="display: none;"></div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
