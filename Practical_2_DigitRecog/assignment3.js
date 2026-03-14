@@ -8,4 +8,4 @@ function runAssignment3() {
     
     console.log("Simple Dense Network created. Contrast this with the CNN's ability to recognize patterns.");
 }
-runAssignment3();
+runAssignment3(); 
