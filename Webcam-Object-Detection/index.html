@@ -5,15 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI Object Scanner | CO3 Project</title>
     <link rel="stylesheet" href="style.css">
-    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/mobilenet"></script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.10.0"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/mobilenet@2.1.1"></script>
 </head>
 <body>
     <div class="scanner-viewport">
-        <video id="webcam" autoplay playsinline muted></video>
+        <video id="webcam" autoplay playsinline muted crossorigin="anonymous"></video>
         
         <div class="hud-container">
             <div class="scan-line"></div>
+            
+            <div id="system-status">INITIALIZING...</div>
+
             <div class="corners">
                 <div class="corner top-left"></div>
                 <div class="corner top-right"></div>
@@ -25,7 +29,7 @@
                 <h3 class="panel-title">SYSTEM_DIAGNOSTICS</h3>
                 <div class="stat-group">
                     <label>TARGET_ID:</label>
-                    <span id="obj-name">SCANNING...</span>
+                    <span id="obj-name">WAITING...</span>
                 </div>
                 <div class="stat-group">
                     <label>CONFIDENCE:</label>
@@ -43,6 +47,7 @@
             </div>
         </div>
     </div>
+
     <script src="app.js"></script>
 </body>
 </html>
