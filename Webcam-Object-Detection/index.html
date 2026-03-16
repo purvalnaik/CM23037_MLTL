@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Object Scanner | CO3 Project</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/mobilenet"></script>
+</head>
+<body>
+    <div class="scanner-viewport">
+        <video id="webcam" autoplay playsinline muted></video>
+        
+        <div class="hud-container">
+            <div class="scan-line"></div>
+            <div class="corners">
+                <div class="corner top-left"></div>
+                <div class="corner top-right"></div>
+                <div class="corner bottom-left"></div>
+                <div class="corner bottom-right"></div>
+            </div>
+
+            <div class="diagnostic-panel">
+                <h3 class="panel-title">SYSTEM_DIAGNOSTICS</h3>
+                <div class="stat-group">
+                    <label>TARGET_ID:</label>
+                    <span id="obj-name">SCANNING...</span>
+                </div>
+                <div class="stat-group">
+                    <label>CONFIDENCE:</label>
+                    <span id="conf">0%</span>
+                </div>
+                <div class="divider"></div>
+                <div class="stat-group">
+                    <label>CORE_LATENCY:</label>
+                    <span id="latency">0ms</span>
+                </div>
+                <div class="stat-group">
+                    <label>REFRESH_RATE:</label>
+                    <span id="fps">0</span> FPS
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="app.js"></script>
+</body>
+</html>
