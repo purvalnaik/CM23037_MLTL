@@ -1,77 +1,65 @@
-// 1. Link the HTML elements to our script
 const video = document.getElementById('webcam');
-const labelDisplay = document.getElementById('obj-name');
-const confDisplay = document.getElementById('conf');
-const latencyDisplay = document.getElementById('latency');
-const fpsDisplay = document.getElementById('fps');
+const statusMsg = document.getElementById('system-status');
+const objName = document.getElementById('obj-name');
+const confDiv = document.getElementById('conf');
+const latencyDiv = document.getElementById('latency');
+const fpsDiv = document.getElementById('fps');
 
-let model; // This will hold the AI "Brain"
-let lastTime = performance.now(); // Used to calculate FPS
+let model;
+let lastTime = performance.now();
 
-// 2. The Start Function: This runs as soon as the page loads
-async function startSystem() {
-    labelDisplay.innerText = "STARTING CAMERA...";
-    
+async function init() {
     try {
-        // Request access to the webcam
+        statusMsg.innerText = "REQUESTING CAMERA...";
+        
+        // 1. Get Camera
         const stream = await navigator.mediaDevices.getUserMedia({ 
-            video: { facingMode: "user" }, 
+            video: { facingMode: 'user' }, 
             audio: false 
         });
-        
-        // Put the camera feed into our <video> tag
         video.srcObject = stream;
 
-        // When the camera is ready, load the AI model
+        // 2. Wait for Video to actually start
         video.onloadeddata = async () => {
-            labelDisplay.innerText = "LOADING AI MODEL...";
-            
-            // Load the MobileNet model from the internet
+            statusMsg.innerText = "LOADING AI...";
+            // Use the global 'mobilenet' object from the CDN script
             model = await mobilenet.load();
-            
-            labelDisplay.innerText = "SYSTEM READY - SCANNING";
-            
-            // Start the detection loop
+            statusMsg.innerText = "SYSTEM ACTIVE";
             detect();
         };
 
     } catch (err) {
-        // If the user clicks "Block" or has no camera
-        console.error(err);
-        labelDisplay.innerText = "CAMERA ERROR";
+        statusMsg.innerText = "ERROR: ACCESS DENIED";
+        console.error("Camera Error:", err);
     }
 }
 
-// 3. The Detection Loop: This runs 30+ times every second
 async function detect() {
-    const startTime = performance.now(); // Record start time for Latency
+    // Record start time for latency
+    const startTime = performance.now();
 
-    // Tell the AI to look at the video and predict what it is
+    // Run AI classification
     const predictions = await model.classify(video);
-    
-    const endTime = performance.now(); // Record end time
+
+    const endTime = performance.now();
     const inferenceTime = (endTime - startTime).toFixed(1);
 
-    // Update the HUD with the results
+    // Update Dashboard
     if (predictions.length > 0) {
-        // Show the top result (e.g., "Cell Phone")
-        labelDisplay.innerText = predictions[0].className.split(',')[0].toUpperCase();
-        // Show confidence (e.g., "95%")
-        confDisplay.innerText = (predictions[0].probability * 100).toFixed(1) + "%";
+        objName.innerText = predictions[0].className.split(',')[0].toUpperCase();
+        confDiv.innerText = (predictions[0].probability * 100).toFixed(1) + "%";
     }
 
-    // Performance Calculations (FPS)
+    // FPS Logic
     const now = performance.now();
     const fps = (1000 / (now - lastTime)).toFixed(1);
     lastTime = now;
 
-    // Update the Diagnostic Panel
-    latencyDisplay.innerText = inferenceTime + "ms";
-    fpsDisplay.innerText = fps;
+    latencyDiv.innerText = inferenceTime + "ms";
+    fpsDiv.innerText = fps;
 
-    // Run this function again for the next frame
     requestAnimationFrame(detect);
 }
 
-// Start the whole process
-startSystem();
+// Kick off the system
+init();
