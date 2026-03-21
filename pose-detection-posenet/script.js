@@ -18,16 +18,14 @@ async function setupCamera() {
 }
 
 // Draw keypoints (joints)
-function drawKeypoints(keypoints, minConfidence = 0.2) {
+function drawKeypoints(keypoints) {
   keypoints.forEach(keypoint => {
-    if (keypoint.score > minConfidence) {
-      const { x, y } = keypoint.position;
+    const { x, y } = keypoint.position;
 
-      ctx.beginPath();
-      ctx.arc(x, y, 6, 0, 2 * Math.PI);
-      ctx.fillStyle = "red";
-      ctx.fill();
-    }
+    ctx.beginPath();
+    ctx.arc(x, y, 8, 0, 2 * Math.PI);
+    ctx.fillStyle = "yellow";
+    ctx.fill();
   });
 }
 
@@ -62,8 +60,9 @@ async function main() {
 
   async function detect() {
     const pose = await net.estimateSinglePose(video, {
-      flipHorizontal: false
-    });
+  flipHorizontal: false,
+  decodingMethod: "single-person"
+});
 
     // Clear canvas
     ctx.clearRect(0, 0, canvas.width, canvas.height);
