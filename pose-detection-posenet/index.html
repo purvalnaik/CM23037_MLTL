@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Pose Detection</title>
+
+  <!-- TensorFlow + PoseNet -->
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/posenet"></script>
+
+  <style>
+    body {
+      margin: 0;
+      text-align: center;
+      background: #111;
+      color: white;
+      font-family: Arial;
+    }
+
+    h1 {
+      margin-top: 10px;
+    }
+
+    canvas {
+      position: absolute;
+      left: 0;
+      top: 0;
+    }
+
+    video {
+      position: absolute;
+      left: 0;
+      top: 0;
+    }
+
+    #container {
+      position: relative;
+      width: 640px;
+      height: 480px;
+      margin: auto;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Pose Detection (Live)</h1>
+
+  <div id="container">
+    <video id="video" width="640" height="480" autoplay playsinline></video>
+    <canvas id="canvas" width="640" height="480"></canvas>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
