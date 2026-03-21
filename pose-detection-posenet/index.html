@@ -12,37 +12,42 @@
   <style>
     body {
       margin: 0;
-      background: #111;
+      background: #0f172a;
       color: white;
-      text-align: center;
       font-family: Arial;
+      text-align: center;
     }
 
     h1 {
-      font-size: 18px;
       margin: 10px;
+      font-size: 18px;
     }
 
     #container {
       position: relative;
       width: 100%;
-      max-width: 640px;
+      max-width: 700px;
       margin: auto;
     }
 
     video, canvas {
       width: 100%;
       height: auto;
+    }
+
+    canvas {
       position: absolute;
       top: 0;
       left: 0;
     }
 
     video {
-      transform: scaleX(-1); /* mirror view */
+      position: relative;
+      z-index: 1;
     }
 
     canvas {
+      z-index: 2;
       pointer-events: none;
     }
   </style>
@@ -50,7 +55,7 @@
 
 <body>
 
-<h1>Pose Detection (Mobile + PC)</h1>
+<h1>Live Pose Detection</h1>
 
 <div id="container">
   <video id="video" autoplay playsinline muted></video>

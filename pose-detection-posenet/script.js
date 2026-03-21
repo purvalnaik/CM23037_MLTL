@@ -4,9 +4,10 @@ const ctx = canvas.getContext("2d");
 
 async function setupCamera() {
   const stream = await navigator.mediaDevices.getUserMedia({
-    video: true,
+    video: { facingMode: "user" },
     audio: false
   });
+
   video.srcObject = stream;
 
   return new Promise(resolve => {
@@ -16,20 +17,22 @@ async function setupCamera() {
   });
 }
 
-function drawKeypoints(keypoints, minConfidence = 0.5) {
+// Draw keypoints (joints)
+function drawKeypoints(keypoints, minConfidence = 0.2) {
   keypoints.forEach(keypoint => {
     if (keypoint.score > minConfidence) {
       const { x, y } = keypoint.position;
 
       ctx.beginPath();
-      ctx.arc(x, y, 5, 0, 2 * Math.PI);
+      ctx.arc(x, y, 6, 0, 2 * Math.PI);
       ctx.fillStyle = "red";
       ctx.fill();
     }
   });
 }
 
-function drawSkeleton(keypoints, minConfidence = 0.5) {
+// Draw skeleton (lines)
+function drawSkeleton(keypoints, minConfidence = 0.2) {
   const adjacentKeyPoints = posenet.getAdjacentKeyPoints(keypoints, minConfidence);
 
   adjacentKeyPoints.forEach(pair => {
@@ -42,28 +45,40 @@ function drawSkeleton(keypoints, minConfidence = 0.5) {
   });
 }
 
-async function detectPose() {
-  const net = await posenet.load();
+async function main() {
+  const net = await posenet.load({
+    architecture: "MobileNetV1",
+    outputStride: 16,
+    inputResolution: { width: 640, height: 480 },
+    multiplier: 0.75
+  });
 
   await setupCamera();
   video.play();
 
-  async function poseLoop() {
+  // Set canvas size equal to video
+  canvas.width = video.videoWidth;
+  canvas.height = video.videoHeight;
+
+  async function detect() {
     const pose = await net.estimateSinglePose(video, {
-      flipHorizontal: true
+      flipHorizontal: false
     });
 
+    // Clear canvas
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.save();
-    ctx.scale(-1, 1);
-    ctx.translate(-canvas.width, 0);
+
+    // Draw video frame
+    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+    // Draw pose
     drawKeypoints(pose.keypoints);
     drawSkeleton(pose.keypoints);
-    ctx.restore();
-    requestAnimationFrame(poseLoop);
+
+    requestAnimationFrame(detect);
   }
 
-  poseLoop();
+  detect();
 }
 
-detectPose();
+main();
