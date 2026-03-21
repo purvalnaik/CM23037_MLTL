@@ -2,67 +2,54 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Pose Detection</title>
 
   <!-- TensorFlow + PoseNet -->
-  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.20.0"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
   <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/posenet"></script>
 
   <style>
     body {
       margin: 0;
-      background: #0f172a;
+      text-align: center;
+      background: #111;
       color: white;
       font-family: Arial;
-      text-align: center;
     }
 
     h1 {
-      margin: 10px;
-      font-size: 18px;
-    }
-
-    #container {
-      position: relative;
-      width: 100%;
-      max-width: 700px;
-      margin: auto;
-    }
-
-    video, canvas {
-      width: 100%;
-      height: auto;
+      margin-top: 10px;
     }
 
     canvas {
       position: absolute;
-      top: 0;
       left: 0;
+      top: 0;
     }
 
     video {
-      position: relative;
-      z-index: 1;
+      position: absolute;
+      left: 0;
+      top: 0;
     }
 
-    canvas {
-      z-index: 2;
-      pointer-events: none;
+    #container {
+      position: relative;
+      width: 640px;
+      height: 480px;
+      margin: auto;
     }
   </style>
 </head>
 
 <body>
+  <h1>Pose Detection (Live)</h1>
 
-<h1>Live Pose Detection</h1>
+  <div id="container">
+    <video id="video" width="640" height="480" autoplay playsinline></video>
+    <canvas id="canvas" width="640" height="480"></canvas>
+  </div>
 
-<div id="container">
-  <video id="video" autoplay playsinline muted></video>
-  <canvas id="canvas"></canvas>
-</div>
-
-<script src="script.js"></script>
-
+  <script src="script.js"></script>
 </body>
 </html>
