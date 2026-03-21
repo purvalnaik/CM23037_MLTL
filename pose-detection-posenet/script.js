@@ -54,10 +54,12 @@ async function detectPose() {
     });
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-
+    ctx.save();
+    ctx.scale(-1, 1);
+    ctx.translate(-canvas.width, 0);
     drawKeypoints(pose.keypoints);
     drawSkeleton(pose.keypoints);
-
+    ctx.restore();
     requestAnimationFrame(poseLoop);
   }
 
